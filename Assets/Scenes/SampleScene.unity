@@ -6206,7 +6206,6 @@ MonoBehaviour:
     spriteType: 1
     health: 15
     speed: 2.4
-  levelTime: 0
 --- !u!1 &509293583
 GameObject:
   m_ObjectHideFlags: 0
@@ -9231,7 +9230,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   isLive: 0
   gameTime: 0
-  maxGameTime: 20
   playerId: 0
   health: 0
   maxHealth: 100
@@ -26948,9 +26946,9 @@ SceneRoots:
   - {fileID: 2033951702}
   - {fileID: 519420032}
   - {fileID: 619394802}
+  - {fileID: 1270558883}
   - {fileID: 1171440404}
   - {fileID: 799436798}
-  - {fileID: 1270558883}
   - {fileID: 1385441762}
   - {fileID: 2147373914}
   - {fileID: 1297917094}
