@@ -5,9 +5,13 @@ using UnityEngine;
 public class Reposition : MonoBehaviour
 {
     Collider2D coll;
+    MapTile mapTile;
+
     void Awake()
     {
         coll = GetComponent<Collider2D>();
+
+        mapTile = GetComponent<MapTile>();
     }
     void OnTriggerExit2D(Collider2D collision)
     {
@@ -23,21 +27,29 @@ public class Reposition : MonoBehaviour
         switch (transform.tag) 
         {
             case "Ground":
-        float diffX = playerPos.x - myPos.x;
-        float diffY = playerPos.y - myPos.y;
+                float diffX = playerPos.x - myPos.x;
+                float diffY = playerPos.y - myPos.y;
 
-        float dirX = diffX < 0 ? -1 : 1;
-        float dirY = diffY < 0 ? -1 : 1;
-        diffX = Mathf.Abs(diffX);
-        diffY = Mathf.Abs(diffY);
+                float dirX = diffX < 0 ? -1 : 1;
+                float dirY = diffY < 0 ? -1 : 1;
+                diffX = Mathf.Abs(diffX);
+                diffY = Mathf.Abs(diffY);
 
-                if(diffX > diffY)
+                bool didMove = false;
+
+                if (diffX > diffY)
                 {
                     transform.Translate(Vector3.right * dirX * 40);
+                    didMove = true;
                 }
                 else if(diffX < diffY)
                 {
                     transform.Translate(Vector3.up * dirY * 40);
+                    didMove = true;
+                }
+                if (didMove && mapTile != null)
+                {
+                    mapTile.ShuffleTrapPositions();
                 }
                 break;
 
@@ -49,13 +61,8 @@ public class Reposition : MonoBehaviour
                     transform.Translate(ran + dist * 2);
                 }
                 break;
-
         }
-
-
-
 
     }
     
-
 }

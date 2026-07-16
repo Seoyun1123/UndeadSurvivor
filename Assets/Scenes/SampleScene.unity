@@ -732,6 +732,7 @@ GameObject:
   - component: {fileID: 101227866}
   - component: {fileID: 101227865}
   - component: {fileID: 101227870}
+  - component: {fileID: 101227871}
   m_Layer: 0
   m_Name: Tilemap (1)
   m_TagString: Ground
@@ -5017,6 +5018,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5b770d284714544ba8ba1c97310e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Reposition
+--- !u!114 &101227871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101227863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41681a0aa8ada5a49b3a59ccab696ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapTile
+  trapPrefabs:
+  - {fileID: 1212977850296858093, guid: 3ec5ea6b6a6f49847bc6949953e3216d, type: 3}
+  - {fileID: 1615779940635928167, guid: d1e783ef2c66a244589b092dfa83697c, type: 3}
+  trapCount: 3
+  tileSize: 20
+  safeZoneRadius: 3
 --- !u!1 &103214669
 GameObject:
   m_ObjectHideFlags: 0
@@ -6206,7 +6225,6 @@ MonoBehaviour:
     spriteType: 1
     health: 15
     speed: 2.4
-  levelTime: 0
 --- !u!1 &509293583
 GameObject:
   m_ObjectHideFlags: 0
@@ -6530,7 +6548,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 8.126985
+  orthographic size: 8.888889
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -9231,7 +9249,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   isLive: 0
   gameTime: 0
-  maxGameTime: 20
   playerId: 0
   health: 0
   maxHealth: 100
@@ -9641,6 +9658,97 @@ Transform:
   m_Children: []
   m_Father: {fileID: 496153891}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1246942587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1246942588}
+  - component: {fileID: 1246942589}
+  - component: {fileID: 1246942590}
+  m_Layer: 0
+  m_Name: shader
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1246942588
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246942587}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2147373914}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1246942589
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246942587}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -0.4}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.6, y: 0.3}
+  m_EdgeRadius: 0
+--- !u!114 &1246942590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246942587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb73ca131fc9ef446876d9ce05aac68e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectManager
 --- !u!1 &1261273995
 GameObject:
   m_ObjectHideFlags: 0
@@ -11957,6 +12065,7 @@ GameObject:
   - component: {fileID: 1771675043}
   - component: {fileID: 1771675042}
   - component: {fileID: 1771675047}
+  - component: {fileID: 1771675048}
   m_Layer: 0
   m_Name: Tilemap (3)
   m_TagString: Ground
@@ -16242,6 +16351,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5b770d284714544ba8ba1c97310e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Reposition
+--- !u!114 &1771675048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771675040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41681a0aa8ada5a49b3a59ccab696ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapTile
+  trapPrefabs:
+  - {fileID: 1212977850296858093, guid: 3ec5ea6b6a6f49847bc6949953e3216d, type: 3}
+  - {fileID: 1615779940635928167, guid: d1e783ef2c66a244589b092dfa83697c, type: 3}
+  trapCount: 3
+  tileSize: 20
+  safeZoneRadius: 3
 --- !u!1 &1786165194
 GameObject:
   m_ObjectHideFlags: 0
@@ -16336,6 +16463,7 @@ GameObject:
   - component: {fileID: 1833901888}
   - component: {fileID: 1833901887}
   - component: {fileID: 1833901892}
+  - component: {fileID: 1833901893}
   m_Layer: 0
   m_Name: Tilemap (2)
   m_TagString: Ground
@@ -20621,6 +20749,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5b770d284714544ba8ba1c97310e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Reposition
+--- !u!114 &1833901893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833901885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41681a0aa8ada5a49b3a59ccab696ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapTile
+  trapPrefabs:
+  - {fileID: 1212977850296858093, guid: 3ec5ea6b6a6f49847bc6949953e3216d, type: 3}
+  - {fileID: 1615779940635928167, guid: d1e783ef2c66a244589b092dfa83697c, type: 3}
+  trapCount: 3
+  tileSize: 20
+  safeZoneRadius: 3
 --- !u!1 &1843065089
 GameObject:
   m_ObjectHideFlags: 0
@@ -21239,6 +21385,7 @@ GameObject:
   - component: {fileID: 1973452642}
   - component: {fileID: 1973452641}
   - component: {fileID: 1973452646}
+  - component: {fileID: 1973452647}
   m_Layer: 0
   m_Name: Tilemap(0)
   m_TagString: Ground
@@ -21410,7 +21557,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 1000c880451c67f4fb3a34370ba7e4ee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25524,6 +25671,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5b770d284714544ba8ba1c97310e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Reposition
+--- !u!114 &1973452647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973452639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41681a0aa8ada5a49b3a59ccab696ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapTile
+  trapPrefabs:
+  - {fileID: 1212977850296858093, guid: 3ec5ea6b6a6f49847bc6949953e3216d, type: 3}
+  - {fileID: 1615779940635928167, guid: d1e783ef2c66a244589b092dfa83697c, type: 3}
+  trapCount: 3
+  tileSize: 20
+  safeZoneRadius: 3
 --- !u!1 &1992358813
 GameObject:
   m_ObjectHideFlags: 0
@@ -26591,6 +26756,7 @@ GameObject:
   - component: {fileID: 2147373917}
   - component: {fileID: 2147373918}
   - component: {fileID: 2147373919}
+  - component: {fileID: 2147373920}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -26701,6 +26867,7 @@ Transform:
   - {fileID: 496153891}
   - {fileID: 2042746333}
   - {fileID: 2092757973}
+  - {fileID: 1246942588}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &2147373915
@@ -26830,6 +26997,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   nearestTarget: {fileID: 0}
+--- !u!114 &2147373920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147373911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb73ca131fc9ef446876d9ce05aac68e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectManager
 --- !u!1 &8109146787435378388
 GameObject:
   m_ObjectHideFlags: 0
