@@ -171,10 +171,5 @@ MonoBehaviour:
   expValue: 2
   detectRadius: 1.6
   playerTransform: {fileID: 0}
-  rigid: {fileID: 0}
-  coll: {fileID: 0}
-  isTargeting: 0
-  spawnDelay: 0.4
-  spawnTimer: 0
   speed: 5
   accel: 8

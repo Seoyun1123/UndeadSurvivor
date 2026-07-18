@@ -116,30 +116,31 @@ public class Enemy : MonoBehaviour
 {
     Vector3 deadpos = this.transform.position;
     
-    // 1. 풀매니저에서 보석을 가져옵니다.
     GameObject expObj = PoolManager.instance.Get(3); 
     
-    // 2. 일단 비활성화하고 몬스터가 죽은 위치로 세팅합니다.
     expObj.SetActive(false);
     expObj.transform.position = new Vector3(deadpos.x, deadpos.y, 0f);
     
-    // ⭐ [핵심 치트키] ⭐
-    // 보석에 붙어있는 ExpItem 스크립트를 가져와서, 
-    // 몬스터가 추적하고 있던 진짜 플레이어의 트랜스폼 정보를 강제로 직접 꽂아줍니다!
     ExpItem expItem = expObj.GetComponent<ExpItem>();
     if (expItem != null)
     {
-        // 몬스터가 원래 잘 쫓아가던 플레이어 대상(예: target 또는 playerTransform 등)을 보석에게 그대로 전수합니다.
-        // 만약 몬스터 스크립트에 플레이어 변수 이름이 다르면 그에 맞게 수정해 주시면 됩니다! (예: GameManager.instance.player.transform)
         if (GameManager.instance != null && GameManager.instance.player != null)
         {
-            expItem.playerTransform = GameManager.instance.player.transform;
+            // ⭐ [물리 좌표 직통 연결] ⭐
+            // 일반 transform이 아니라, 플레이어가 움직일 때 쓰는 진짜 물리 리지드바디의 컴포넌트를 찾아서 보석에게 직접 꽂아줍니다!
+            Rigidbody2D playerRigid = GameManager.instance.player.GetComponent<Rigidbody2D>();
+            if (playerRigid != null)
+            {
+                expItem.playerTransform = playerRigid.transform;
+            }
+            else
+            {
+                expItem.playerTransform = GameManager.instance.player.transform;
+            }
         }
     }
     
-    // 3. 이제 플레이어 정보가 강제로 뇌에 박힌 보석을 활성화합니다!
     expObj.SetActive(true);
-
     gameObject.SetActive(false);
 }
     

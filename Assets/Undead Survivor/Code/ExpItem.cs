@@ -6,14 +6,14 @@ public class ExpItem : MonoBehaviour
     public int expValue = 10;          
     public float detectRadius = 1.6f;   
 
-    [Header("실시간 추적 대상 (몬스터가 꽂아줌)")]
+    [Header("실시간 추적 대상")]
     public Transform playerTransform; 
 
     private Rigidbody2D rigid;
     private Collider2D coll;
     
     private bool isTargeting = false;
-    private float spawnDelay = 0.2f;    
+    private float spawnDelay = 0.2f; // 튕겨나가는 안전 시간    
     private float spawnTimer = 0f;
 
     [Header("자석 속도 설정")]
@@ -28,17 +28,17 @@ public class ExpItem : MonoBehaviour
 
     private void OnEnable()
     {
-        isTargeting = false;
+        // ⭐ 태어나자마자 자석은 켜두되, 타이머와 속도를 초기화합니다.
+        isTargeting = true;
         spawnTimer = 0f;
         speed = 5f; 
 
         transform.localScale = Vector3.one; 
         transform.rotation = Quaternion.identity;
 
-        // 콜라이더 트리거 설정 (자석 이동 중에 튕기지 않게)
         if (coll != null) 
         {
-            coll.enabled = false;
+            coll.enabled = true;
             coll.isTrigger = true; 
         }
 
@@ -49,7 +49,7 @@ public class ExpItem : MonoBehaviour
             rigid.angularVelocity = 0f;
             rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-            // 몬스터 몸에서 사방으로 튕겨 나가는 초기 물리 연출
+            // 몬스터 몸에서 "통" 튕겨나가는 힘 주입
             Vector2 randomDir = Random.insideUnitCircle.normalized;
             rigid.AddForce(randomDir * 2.5f, ForceMode2D.Impulse); 
         }
@@ -58,49 +58,36 @@ public class ExpItem : MonoBehaviour
     private void Update()
     {
         if (GameManager.instance != null && !GameManager.instance.isLive) return;
-        if (playerTransform == null) return; 
-
-        // 소환 직후 튕겨나가는 시간 딜레이
+        
+        // ⭐ 안전 타이머가 도는 동안에는 거리 계산이나 흡수 로직을 완전히 패스합니다!
         if (spawnTimer < spawnDelay)
         {
             spawnTimer += Time.deltaTime;
-
-            if (spawnTimer >= spawnDelay)
-            {
-                if (coll != null) coll.enabled = true;
-            }
-            return; 
-        }
-
-        float distance = Vector2.Distance(transform.position, playerTransform.position);
-
-        if (!isTargeting)
-        {
-            if (distance <= detectRadius)
-            {
-                isTargeting = true;
-            }
         }
     }
 
-    // ⭐ 다이나믹 리지드바디에 플레이어로 향하는 힘(속도)만 단순하게 불어넣어 줍니다.
     private void FixedUpdate()
     {
         if (GameManager.instance != null && !GameManager.instance.isLive) return;
         if (playerTransform == null || !isTargeting) return;
 
+        // ⭐ 튕겨나가는 안전 시간(0.2초) 동안에는 밑에 추적 및 흡수 연산을 아예 실행하지 않습니다!
+        // 이방어막 덕분에 풀매니저 우주 공간에서 생성되자마자 자폭하는 버그가 완전히 박살납니다.
+        if (spawnTimer < spawnDelay) return;
+
         speed += accel * Time.fixedDeltaTime;
 
-        // 몬스터와 똑같이 플레이어 방향 벡터 구하기
-        Vector2 dirVec = (Vector2)playerTransform.position - rigid.position;
-        Vector2 nextVec = dirVec.normalized * speed;
+        Transform realPlayerRoot = playerTransform.root;
+        Vector2 myPos = rigid.position;
+        Vector2 targetPos = new Vector2(realPlayerRoot.position.x, realPlayerRoot.position.y); 
+        Vector2 dirVec = targetPos - myPos;
 
-        // 다이나믹 속도 벡터에 플레이어 방향 속도를 그냥 꽂아넣기!
-        rigid.linearVelocity = nextVec;
+        // 몬스터 공식으로 속도 벡터 주입
+        rigid.linearVelocity = dirVec.normalized * speed;
 
-        // 거리 확인 후 획득 처리
-        float distance = Vector2.Distance(rigid.position, playerTransform.position);
-        if (distance <= 0.15f)
+        // 안전 시간이 지난 후에만 플레이어 품에 닿았는지 체크!
+        float distance = Vector2.Distance(myPos, targetPos);
+        if (distance <= 0.2f)
         {
             EatExp();
         }
@@ -117,7 +104,8 @@ public class ExpItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        // 안전 시간이 지났을 때만 트리거 충돌을 허용합니다.
+        if (spawnTimer >= spawnDelay && collision.CompareTag("Player"))
         {
             EatExp();
         }
