@@ -14,38 +14,65 @@ public class Spawner : MonoBehaviour
         spawnPoint = GetComponentsInChildren<Transform>();
         
     }
+//     void Update()
+// {
+//     if (!GameManager.instance.isLive) return;
+
+//     // 스페이스바를 누를 때마다 딱 1마리만 내가 원할 때 스폰! ⭐
+//     if (Input.GetKeyDown(KeyCode.G))
+//     {
+//         Spawn(); // 기존 몬스터 소환 함수 호출
+//     }
+// }
     void Update()
-{
-    if (!GameManager.instance.isLive) return;
-
-    // 스페이스바를 누를 때마다 딱 1마리만 내가 원할 때 스폰! ⭐
-    if (Input.GetKeyDown(KeyCode.G))
     {
-        Spawn(); // 기존 몬스터 소환 함수 호출
+        if(!GameManager.instance.isLive)
+	return;
+
+        timer += Time.deltaTime;
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f),spawnData.Length - 1);
+
+        if(timer > spawnData[level].spawnTime)
+        {
+            timer = 0;
+            Spawn();
+        }
+
     }
-}
-    // void Update()
-    // {
-    //     if(!GameManager.instance.isLive)
-	// return;
-
-    //     timer += Time.deltaTime;
-    //     level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f),spawnData.Length - 1);
-
-    //     if(timer > spawnData[level].spawnTime)
-    //     {
-    //         timer = 0;
-    //         Spawn();
-    //     }
-
-    // }
 
     void Spawn()
+{
+    int type = spawnData[level].spriteType;
+    GameObject enemyObj;
+
+    // 💡 슬라임(5번)만 전용 프리팹을 꺼내고, 나머지는 전부 0번(일반 몬스터) 프리팹을 꺼냄!
+    if (type == 3) // 슬라임 spriteType 번호
     {
-        GameObject enemy = GameManager.instance.pool.Get(0);
-        enemy.transform.position = spawnPoint[Random.Range(1,spawnPoint.Length)].position;
-        enemy.GetComponent<Enemy>().Init(spawnData[level]);
+        enemyObj = GameManager.instance.pool.Get(3);
     }
+    else
+    {
+        enemyObj = GameManager.instance.pool.Get(0);
+    }
+
+    enemyObj.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+
+    // 1. 일반 몬스터일 경우: Init()으로 AcEnemy 애니메이터 바꿔치기
+    Enemy enemy = enemyObj.GetComponent<Enemy>();
+    if (enemy != null)
+    {
+        enemy.Init(spawnData[level]);
+    }
+
+    // 2. 슬라임일 경우: 슬라임 스펙 초기화
+    Slime slime = enemyObj.GetComponent<Slime>();
+    if (slime != null)
+    {
+        slime.health = spawnData[level].health;
+        slime.maxHealth = spawnData[level].health;
+        slime.speed = spawnData[level].speed;
+    }
+}
 }
 [System.Serializable]
 public class SpawnData

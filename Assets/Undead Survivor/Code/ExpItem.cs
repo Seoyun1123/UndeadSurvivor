@@ -2,23 +2,17 @@ using UnityEngine;
 
 public class ExpItem : MonoBehaviour
 {
-    [Header("경험치 설정")]
-    public int expValue = 10;          
-    public float detectRadius = 1.6f;   
-
-    [Header("실시간 추적 대상")]
-    public Transform playerTransform; 
+    public int expValue = 10; // 경험치 점수
+    public Transform playerTransform;
+    
+    public float startSpeed = 3f;
+    public float accel = 10f;
+    public float spawnDelay = 0.3f; // 💡 0.3초 무적/대기 시간
 
     private Rigidbody2D rigid;
     private Collider2D coll;
-    
-    private bool isTargeting = false;
-    private float spawnDelay = 0.2f; // 튕겨나가는 안전 시간    
-    private float spawnTimer = 0f;
-
-    [Header("자석 속도 설정")]
-    public float speed = 5f;            
-    public float accel = 8f;            
+    private float speed;
+    private float spawnTimer;
 
     private void Awake()
     {
@@ -28,86 +22,66 @@ public class ExpItem : MonoBehaviour
 
     private void OnEnable()
     {
-        // ⭐ 태어나자마자 자석은 켜두되, 타이머와 속도를 초기화합니다.
-        isTargeting = true;
         spawnTimer = 0f;
-        speed = 5f; 
+        speed = startSpeed;
 
-        transform.localScale = Vector3.one; 
-        transform.rotation = Quaternion.identity;
-
-        if (coll != null) 
+        // 💡 1. 태어날 때 일단 콜라이더를 끕니다! (Player.cs의 OnTriggerEnter2D에 바로 걸리는 것 방지)
+        if (coll != null)
         {
-            coll.enabled = true;
-            coll.isTrigger = true; 
+            coll.enabled = false; 
         }
 
         if (rigid != null)
         {
             rigid.bodyType = RigidbodyType2D.Dynamic;
-            rigid.linearVelocity = Vector2.zero; 
+            rigid.linearVelocity = Vector2.zero;
             rigid.angularVelocity = 0f;
-            rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-            // 몬스터 몸에서 "통" 튕겨나가는 힘 주입
+            // 💡 2. 바닥으로 튕겨 나가는 힘 주입
             Vector2 randomDir = Random.insideUnitCircle.normalized;
-            rigid.AddForce(randomDir * 2.5f, ForceMode2D.Impulse); 
-        }
-    }
-
-    private void Update()
-    {
-        if (GameManager.instance != null && !GameManager.instance.isLive) return;
-        
-        // ⭐ 안전 타이머가 도는 동안에는 거리 계산이나 흡수 로직을 완전히 패스합니다!
-        if (spawnTimer < spawnDelay)
-        {
-            spawnTimer += Time.deltaTime;
+            rigid.AddForce(randomDir * 2.5f, ForceMode2D.Impulse);
         }
     }
 
     private void FixedUpdate()
     {
         if (GameManager.instance != null && !GameManager.instance.isLive) return;
-        if (playerTransform == null || !isTargeting) return;
 
-        // ⭐ 튕겨나가는 안전 시간(0.2초) 동안에는 밑에 추적 및 흡수 연산을 아예 실행하지 않습니다!
-        // 이방어막 덕분에 풀매니저 우주 공간에서 생성되자마자 자폭하는 버그가 완전히 박살납니다.
+        spawnTimer += Time.fixedDeltaTime;
+
+        // 💡 3. 0.3초 동안은 바닥에 튕겨 나가는 연출을 보장하며 아무것도 안 함!
         if (spawnTimer < spawnDelay) return;
 
-        speed += accel * Time.fixedDeltaTime;
+        // 💡 4. 0.3초가 지난 뒤에야 비로소 콜라이더를 켜서 플레이어가 먹을 수 있게 만듭니다!
+        if (coll != null && !coll.enabled)
+        {
+            coll.enabled = true;
+        }
 
-        Transform realPlayerRoot = playerTransform.root;
+        if (playerTransform == null) return;
+
+        // 5. 플레이어를 향해 가속 이동
+        speed += accel * Time.fixedDeltaTime;
         Vector2 myPos = rigid.position;
-        Vector2 targetPos = new Vector2(realPlayerRoot.position.x, realPlayerRoot.position.y); 
+        Vector2 targetPos = playerTransform.position;
         Vector2 dirVec = targetPos - myPos;
 
-        // 몬스터 공식으로 속도 벡터 주입
         rigid.linearVelocity = dirVec.normalized * speed;
 
-        // 안전 시간이 지난 후에만 플레이어 품에 닿았는지 체크!
-        float distance = Vector2.Distance(myPos, targetPos);
-        if (distance <= 0.2f)
+        // 6. 아주 가까워지면 먹기
+        if (Vector2.Distance(myPos, targetPos) <= 0.3f)
         {
             EatExp();
         }
     }
 
-    private void EatExp()
+    public void EatExp()
     {
         if (GameManager.instance != null)
         {
-            GameManager.instance.GetExp(expValue); 
+            GameManager.instance.GetExp(expValue);
         }
-        gameObject.SetActive(false); 
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // 안전 시간이 지났을 때만 트리거 충돌을 허용합니다.
-        if (spawnTimer >= spawnDelay && collision.CompareTag("Player"))
-        {
-            EatExp();
-        }
+        gameObject.SetActive(false);
     }
 }

@@ -112,38 +112,29 @@ public class Enemy : MonoBehaviour
         Vector3 dirVec = transform.position - playerPos;
         rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
     }
-    void Dead()
+   void Dead()
 {
-    Vector3 deadpos = this.transform.position;
-    
-    GameObject expObj = PoolManager.instance.Get(3); 
-    
-    expObj.SetActive(false);
-    expObj.transform.position = new Vector3(deadpos.x, deadpos.y, 0f);
-    
-    ExpItem expItem = expObj.GetComponent<ExpItem>();
-    if (expItem != null)
+    Vector3 deadpos = transform.position;
+
+    // 1. PoolManager에서 경험치 상자를 가져옵니다. (Get 안에서 SetActive(true)가 됩니다)
+    GameObject expObj = PoolManager.instance.Get(4); 
+
+    if (expObj != null)
     {
-        if (GameManager.instance != null && GameManager.instance.player != null)
+        // 2. 일단 몬스터가 죽은 위치로 옮깁니다.
+        expObj.transform.position = deadpos;
+
+        // 3. ExpItem 스크립트에 플레이어 Transform 연결!
+        ExpItem expItem = expObj.GetComponent<ExpItem>();
+        if (expItem != null && GameManager.instance != null && GameManager.instance.player != null)
         {
-            // ⭐ [물리 좌표 직통 연결] ⭐
-            // 일반 transform이 아니라, 플레이어가 움직일 때 쓰는 진짜 물리 리지드바디의 컴포넌트를 찾아서 보석에게 직접 꽂아줍니다!
-            Rigidbody2D playerRigid = GameManager.instance.player.GetComponent<Rigidbody2D>();
-            if (playerRigid != null)
-            {
-                expItem.playerTransform = playerRigid.transform;
-            }
-            else
-            {
-                expItem.playerTransform = GameManager.instance.player.transform;
-            }
+            expItem.playerTransform = GameManager.instance.player.transform;
         }
     }
-    
-    expObj.SetActive(true);
+
+    // 4. 몬스터 본인은 꺼주기
     gameObject.SetActive(false);
 }
-    
 
     
 

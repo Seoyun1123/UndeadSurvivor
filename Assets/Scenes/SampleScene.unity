@@ -6206,6 +6206,10 @@ MonoBehaviour:
     spriteType: 1
     health: 15
     speed: 2.4
+  - spawnTime: 0.2
+    spriteType: 3
+    health: 200
+    speed: 0.4
 --- !u!1 &509293583
 GameObject:
   m_ObjectHideFlags: 0
@@ -6529,7 +6533,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 9.361111
+  orthographic size: 26.14948
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -7709,7 +7713,9 @@ MonoBehaviour:
   - {fileID: 8973269546941494106, guid: 4a56d35d28c9ed749ab66a9d246e7146, type: 3}
   - {fileID: 8226912096459017289, guid: 49d4e2b403961ea4abf9638c573b9f4e, type: 3}
   - {fileID: 9115967149530238874, guid: 10417bad54adaf44fbad1f88f4001189, type: 3}
+  - {fileID: 8973269546941494106, guid: 6749b2b195a924fc682e315df25a788a, type: 3}
   - {fileID: 9209541120926660352, guid: d8f0ce83e966444d689d67abfa2166d0, type: 3}
+  - {fileID: 9115967149530238874, guid: d749231095e084d5aaf061bbfb05571c, type: 3}
 --- !u!4 &799436798
 Transform:
   m_ObjectHideFlags: 0
@@ -26623,7 +26629,7 @@ GameObject:
   - component: {fileID: 2147373919}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
