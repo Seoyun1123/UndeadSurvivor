@@ -14,16 +14,6 @@ public class Spawner : MonoBehaviour
         spawnPoint = GetComponentsInChildren<Transform>();
         
     }
-//     void Update()
-// {
-//     if (!GameManager.instance.isLive) return;
-
-//     // 스페이스바를 누를 때마다 딱 1마리만 내가 원할 때 스폰! ⭐
-//     if (Input.GetKeyDown(KeyCode.G))
-//     {
-//         Spawn(); // 기존 몬스터 소환 함수 호출
-//     }
-// }
     void Update()
     {
         if(!GameManager.instance.isLive)
