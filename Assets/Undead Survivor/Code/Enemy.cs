@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -111,14 +112,31 @@ public class Enemy : MonoBehaviour
         Vector3 dirVec = transform.position - playerPos;
         rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
     }
-    void Dead()
+   void Dead()
+{
+    Vector3 deadpos = transform.position;
+
+    // 1. PoolManager에서 경험치 상자를 가져옵니다. (Get 안에서 SetActive(true)가 됩니다)
+    GameObject expObj = PoolManager.instance.Get(4); 
+
+    if (expObj != null)
+    {
+        // 2. 일단 몬스터가 죽은 위치로 옮깁니다.
+        expObj.transform.position = deadpos;
+
+        // 3. ExpItem 스크립트에 플레이어 Transform 연결!
+        ExpItem expItem = expObj.GetComponent<ExpItem>();
+        if (expItem != null && GameManager.instance != null && GameManager.instance.player != null)
         {
-            gameObject.SetActive(false);
+            expItem.playerTransform = GameManager.instance.player.transform;
         }
-    
+    }
+
+    // 4. 몬스터 본인은 꺼주기
+    gameObject.SetActive(false);
+}
 
     
-
 
 
 }
