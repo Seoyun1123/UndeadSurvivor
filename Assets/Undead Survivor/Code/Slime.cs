@@ -10,6 +10,12 @@ public class Slime : MonoBehaviour
     public float health = 200f;      // 흙슬라임 전용 체력
     public float maxHealth = 200f;
     public float damage = 10f;
+
+
+    [Header("몬스터 타입 설정")]
+    public bool canMove = true;
+    public bool useAttackAnimation = false;
+    
     
 
     [Header("원거리 공격")]
@@ -75,8 +81,15 @@ void Update()
         return;
 
     // Hit 애니메이션 재생 중일 때는 멈칫하도록 기존 Enemy 로직 그대로 적용!
-    if(!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+    if(!isLive || target == null)
         return;
+    
+     // 지옥식물처럼 안 움직이는 몬스터
+    if (!canMove)
+    {
+        rigid.linearVelocity = Vector2.zero;
+        return;
+    }
 
     Vector2 dirVec = (Vector2) target.position - rigid.position;
     Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
@@ -106,7 +119,7 @@ void Update()
     if (bullet != null)
     {
         // 💡 per를 0으로 전달! (1번 맞으면 per-- 되어서 -1이 되고 바로 사라짐)
-        bullet.Init(damage, 0, dirVec); 
+        bullet.Init(damage, 0, dirVec,transform.position); 
     }
 }
 
@@ -119,6 +132,8 @@ void Update()
         if (playerBullet != null)
         {
             health -= playerBullet.damage;
+            //슬라임 피격음
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.SlimeHit);
         }
 
         if (health <= 0)

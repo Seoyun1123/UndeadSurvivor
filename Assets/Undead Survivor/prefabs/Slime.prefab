@@ -103,10 +103,10 @@ GameObject:
   - component: {fileID: 2134925150695015648}
   - component: {fileID: 2305151308871290088}
   - component: {fileID: 7912662961555388951}
-  - component: {fileID: 2972130664859829076}
   - component: {fileID: 3437810312284745504}
+  - component: {fileID: 1283066464232526053}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: Slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,12 +175,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -493647738, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
+  m_Sprite: {fileID: -971380471989021944, guid: 3c564e358d64d6643ae25396cd5f305b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.22, y: 0.21}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -196,7 +196,7 @@ Animator:
   m_GameObject: {fileID: 8973269546941494106}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f2855d618fc8d9c499189d3f39b9cbbc, type: 2}
+  m_Controller: {fileID: 22100000, guid: 95bd95f93fe931648911723c4c094cc9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -272,25 +272,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.7, y: 0.9}
   m_Direction: 0
---- !u!114 &2972130664859829076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8973269546941494106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f059da7610ed1d948806241037926427, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  speed: 0
-  health: 0
-  maxHealth: 0
-  animCon:
-  - {fileID: 22100000, guid: bc93e000d57c88445a9298fd92406e76, type: 2}
-  - {fileID: 22100000, guid: 12cfc8b2360c2fc4499d4f6f6607671a, type: 2}
-  target: {fileID: 0}
 --- !u!114 &3437810312284745504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,3 +284,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5b770d284714544ba8ba1c97310e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Reposition
+--- !u!114 &1283066464232526053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8973269546941494106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5d0d06f44f6c47a29a918dcb621a740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Slime
+  attackRange: 5
+  shootInterval: 3
+  speed: 0.4
+  health: 200
+  maxHealth: 200
+  damage: 10
+  bulletPoolIndex: 5

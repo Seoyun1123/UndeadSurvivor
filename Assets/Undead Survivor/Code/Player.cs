@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 public class Player : MonoBehaviour
 {
     public Vector2 inputVec;
@@ -7,6 +8,8 @@ public class Player : MonoBehaviour
     public Scanner scanner;
     public Hand[] hands;
     public RuntimeAnimatorController[] animCon;
+    Coroutine slowRoutine;
+    float originalSpeed;
 
 
     Rigidbody2D rigid;
@@ -25,6 +28,7 @@ public class Player : MonoBehaviour
     void OnEnable()
     {
         speed *= Character.Speed;
+        originalSpeed = speed;
         anim.runtimeAnimatorController = animCon[GameManager.instance.playerId];
     }
 
@@ -122,4 +126,41 @@ public class Player : MonoBehaviour
             GameManager.instance.GameOver();
         }
     }
+
+    public void ApplyWaveEffect(
+    Vector3 sourcePosition,
+    float pullDistance,
+    float slowMultiplier,
+    float slowDuration)
+{
+    // 1. 지옥식물 방향으로 끌어당기기
+    Vector2 dir =
+        ((Vector2)sourcePosition - rigid.position).normalized;
+
+    rigid.MovePosition(
+        rigid.position + dir * pullDistance
+    );
+
+    // 2. 기존 감속이 있다면 갱신
+    if (slowRoutine != null)
+    {
+        StopCoroutine(slowRoutine);
+    }
+
+    slowRoutine =
+        StartCoroutine(SlowRoutine(slowMultiplier, slowDuration));
+}
+
+IEnumerator SlowRoutine(float multiplier, float duration)
+{
+    // 이동속도 1/4
+    speed = originalSpeed * multiplier;
+
+    yield return new WaitForSeconds(duration);
+
+    // 원래 속도로 복구
+    speed = originalSpeed;
+
+    slowRoutine = null;
+}
 }

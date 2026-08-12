@@ -13,6 +13,11 @@ public class HUD : MonoBehaviour
     {
         myText = GetComponent<Text>();
         mySlider = GetComponent<Slider>();
+
+        if(myText == null)
+        myText = GetComponentInChildren<Text>(true);
+        if(mySlider == null)
+        mySlider = GetComponentInChildren<Slider>(true);
     }
 
     void LateUpdate()

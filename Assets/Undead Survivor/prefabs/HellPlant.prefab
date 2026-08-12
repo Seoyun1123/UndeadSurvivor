@@ -100,13 +100,12 @@ GameObject:
   m_Component:
   - component: {fileID: 2178260949380653345}
   - component: {fileID: 2637077307356343804}
-  - component: {fileID: 2134925150695015648}
   - component: {fileID: 2305151308871290088}
   - component: {fileID: 7912662961555388951}
-  - component: {fileID: 2972130664859829076}
   - component: {fileID: 3437810312284745504}
+  - component: {fileID: -4130223581859254256}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: HellPlant
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,7 +174,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -493647738, guid: 3bcb7877229a5334da528f2f0872b5c3, type: 3}
+  m_Sprite: {fileID: 8264088715448309314, guid: b8762dced0f66dd41ab1a3559ee054bd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -186,28 +185,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &2134925150695015648
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8973269546941494106}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f2855d618fc8d9c499189d3f39b9cbbc, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!50 &2305151308871290088
 Rigidbody2D:
   serializedVersion: 5
@@ -234,7 +211,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 7
 --- !u!70 &7912662961555388951
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -272,25 +249,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.7, y: 0.9}
   m_Direction: 0
---- !u!114 &2972130664859829076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8973269546941494106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f059da7610ed1d948806241037926427, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  speed: 0
-  health: 0
-  maxHealth: 0
-  animCon:
-  - {fileID: 22100000, guid: bc93e000d57c88445a9298fd92406e76, type: 2}
-  - {fileID: 22100000, guid: 12cfc8b2360c2fc4499d4f6f6607671a, type: 2}
-  target: {fileID: 0}
 --- !u!114 &3437810312284745504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,3 +261,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5b770d284714544ba8ba1c97310e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Reposition
+--- !u!114 &-4130223581859254256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8973269546941494106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5d0d06f44f6c47a29a918dcb621a740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Slime
+  attackRange: 5
+  shootInterval: 3
+  speed: 0
+  health: 130
+  maxHealth: 130
+  damage: 0
+  canMove: 0
+  useAttackAnimation: 0
+  bulletPoolIndex: 7

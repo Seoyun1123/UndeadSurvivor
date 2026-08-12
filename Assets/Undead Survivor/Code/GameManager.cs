@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
-    
+    public Spawner spawner;
     public static GameManager instance;
     [Header("# Game Control")]
     public bool isLive;
@@ -23,6 +23,12 @@ public class GameManager : MonoBehaviour
     public Result uiResult;
     public Transform uiJoy;
     public GameObject enemyCleaner;
+    public GameObject uiGameStart;
+public GameObject characterGroup;
+public GameObject mapGroup;
+
+public GameObject[] maps;
+public int mapId;
 
     void Awake()
     {
@@ -36,19 +42,50 @@ public class GameManager : MonoBehaviour
 
     public void GameStart(int id)
     {
-        playerId = id;
-        health = maxHealth;
-        player.gameObject.SetActive(true);
-        uiLevelUp.Select(playerId % 2);
-        Resume();
-        AudioManager.instance.PlayBgm(true);
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+        // 캐릭터만 기억
+    playerId = id;
+
+    // 캐릭터 선택창 닫기
+    characterGroup.SetActive(false);
+
+    // 맵 선택창 열기
+    mapGroup.SetActive(true);
+
+    AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
     }
 
     public void GameOver()
     {
         StartCoroutine(GameOverRoutine());
     }
+
+    public void MapStart(int id)
+{
+    mapId = id;
+
+    // 선택된 맵만 활성화
+    for (int i = 0; i < maps.Length; i++)
+    {
+        if (maps[i] != null)
+            maps[i].SetActive(i == mapId);
+    }
+
+    // 실제 게임 시작
+    health = maxHealth;
+    player.gameObject.SetActive(true);
+
+    spawner.SetMap(mapId);
+
+    // 시작 UI 전체 끄기
+    uiGameStart.SetActive(false);
+
+    uiLevelUp.Select(playerId % 2);
+
+    Resume();
+
+    AudioManager.instance.PlayBgm(true);
+    AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+}
 
     IEnumerator GameOverRoutine()
     {
